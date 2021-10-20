@@ -126,15 +126,13 @@ class Hero:
         nowTime = time.time()
 
         if nowTime - self.frameTime > 0.1:
-            print('state : ', self.state)
-            print('frame : ', self.frame)
             self.frameTime = time.time()
             if self.state == Character_State_Move or Character_State_Idle:
                 self.frame = (self.frame + 1) % 6
             elif self.state == Character_State_Attack:
                 print('frame plus')
                 self.frame += 1
-                if self.frame <= 3:
+                if self.frame >= 3:
                     if self.isLeftButton or self.isRightButton or self.isUpButton or self.isDownButton:
                         self.state = Character_State_Move
                     else:
@@ -143,6 +141,7 @@ class Hero:
         if self.isLeftButton or self.isRightButton or self.isUpButton or self.isDownButton:
             if self.state != Character_State_Attack or Character_State_Attacked or Character_State_Roll:
                 self.state = Character_State_Move
+                print('ChangeToMove')
                 if self.isLeftButton:
                     self.direction = Character_Direction_Left
                 elif self.isUpButton:
@@ -152,6 +151,8 @@ class Hero:
                 elif self.isRightButton:
                     self.direction = Character_Direction_Right
         else:
-            if self.state != Character_State_Attack or Character_State_Attacked or Character_State_Roll:
+            if self.state != Character_State_Attack or self.state != Character_State_Attacked or self.state != Character_State_Roll:
+                # 이 부분에서 오류 나는 듯
                 self.state = Character_State_Idle
+                print('ChangeToIdle')
 
