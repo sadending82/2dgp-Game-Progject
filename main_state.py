@@ -40,6 +40,7 @@ def handle_events():
                 izuna.state = Character.Character_State_Attack
                 izuna.frame = 0
                 izuna.frameTime = time.time()
+                print('input j ', izuna.state, izuna.frame)
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_a:
                 izuna.isLeftButton = False
@@ -54,7 +55,9 @@ def handle_events():
 def update():
 
     izuna.Move()
+    print('Move ', izuna.state, izuna.frame)
     izuna.Set_Hero_New()
+    print('SetHero ', izuna.state, izuna.frame)
     handle_events()
     if izuna.state == Character.Character_State_Attack:
         print('j', izuna.state)
