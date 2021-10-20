@@ -1,3 +1,5 @@
+import pico2d
+
 class GameState:
     def __init__(self, state):
         self.enter = state.enter
@@ -49,6 +51,7 @@ def run(start_state):
         stack[-1].handle_events()
         stack[-1].update()
         stack[-1].draw()
+        pico2d.delay(0.013)
     while len(stack) > 0:
         stack[-1].exit()
         stack.pop()
