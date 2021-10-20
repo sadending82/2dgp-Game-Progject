@@ -1,5 +1,6 @@
 from pico2d import *
 import Character
+import time
 from game_framework import *
 
 Window_Width = 800
@@ -27,24 +28,26 @@ def handle_events():
     events = get_events()
     for event in events:
         if event.type == SDL_KEYDOWN:
-            if event.key == SDLK_ESCAPE:
-                Program_Running = False
-            elif event.key == SDLK_LEFT:
+            if event.key == SDLK_a:
                 izuna.isLeftButton = True
-            elif event.key == SDLK_RIGHT:
+            elif event.key == SDLK_d:
                 izuna.isRightButton = True
-            elif event.key == SDLK_UP:
+            elif event.key == SDLK_w:
                 izuna.isUpButton = True
-            elif event.key == SDLK_DOWN:
+            elif event.key == SDLK_s:
                 izuna.isDownButton = True
+            elif event.key == SDLK_j:
+                izuna.state = Character.Character_State_Attack
+                izuna.frame = 0
+                izuna.frameTime = time.time()
         elif event.type == SDL_KEYUP:
-            if event.key == SDLK_LEFT:
+            if event.key == SDLK_a:
                 izuna.isLeftButton = False
-            elif event.key == SDLK_RIGHT:
+            elif event.key == SDLK_d:
                 izuna.isRightButton = False
-            elif event.key == SDLK_UP:
+            elif event.key == SDLK_w:
                 izuna.isUpButton = False
-            elif event.key == SDLK_DOWN:
+            elif event.key == SDLK_s:
                 izuna.isDownButton = False
 
 
@@ -52,8 +55,9 @@ def update():
 
     izuna.Move()
     izuna.Set_Hero_New()
-
     handle_events()
+    if izuna.state == Character.Character_State_Attack:
+        print('j', izuna.state)
 
 def draw():
     clear_canvas()

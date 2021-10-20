@@ -42,7 +42,6 @@ class Hero:
                 self.image.clip_draw(43, 1195 - 165, 16, 32, self.x, self.y)
 
         elif self.state == Character_State_Move:
-
             if self.direction == Character_Direction_Left:
                 if self.frame == 0:
                     self.image.clip_draw(24, 1195-231, 16, 32, self.x, self.y)
@@ -56,7 +55,6 @@ class Hero:
                     self.image.clip_draw(62, 1195-231, 16, 32, self.x, self.y)
                 elif self.frame == 5:
                     self.image.clip_draw(43, 1195-231, 16, 32, self.x, self.y)
-
             elif self.direction == Character_Direction_Up:
                 if self.frame == 0:
                     self.image.clip_draw(24, 1195-31, 16, 32, self.x, self.y)
@@ -70,7 +68,6 @@ class Hero:
                     self.image.clip_draw(62, 1195-31, 16, 32, self.x, self.y)
                 elif self.frame == 5:
                     self.image.clip_draw(43, 1195-31, 16, 32, self.x, self.y)
-
             elif self.direction == Character_Direction_Right:
                 if self.frame == 0:
                     self.image.clip_draw(24, 1195-99, 16, 32, self.x, self.y)
@@ -84,7 +81,6 @@ class Hero:
                     self.image.clip_draw(62, 1195-99, 16, 32, self.x, self.y)
                 elif self.frame == 5:
                     self.image.clip_draw(43, 1195-99, 16, 32, self.x, self.y)
-
             elif self.direction == Character_Direction_Down:
                 if self.frame == 0:
                     self.image.clip_draw(24, 1195-165, 16, 32, self.x, self.y)
@@ -98,6 +94,17 @@ class Hero:
                     self.image.clip_draw(62, 1195-165, 17, 32, self.x, self.y)
                 elif self.frame == 5:
                     self.image.clip_draw(43, 1195-165, 16, 32, self.x, self.y)
+        elif self.state == Character_State_Attack:
+            print("i'm here")
+            if self.direction == Character_Direction_Left:
+                if self.frame == 0:
+                    self.image.clip_draw(122, 1195-231, 20, 32, self.x, self.y)
+                elif self.frame == 1:
+                    self.image.clip_draw(145, 1195-231, 25, 32, self.x-5, self.y)
+                elif self.frame == 2:
+                    self.image.clip_draw(145, 1195-231, 25, 32, self.x-5, self.y)
+                elif self.frame == 3:
+                    self.image.clip_draw(145, 1195-231, 25, 32, self.x-5, self.y)
 
     def Move(self):
         if not self.BoundBoxCheck():
@@ -119,11 +126,22 @@ class Hero:
         nowTime = time.time()
 
         if nowTime - self.frameTime > 0.1:
+            print('state : ', self.state)
+            print('frame : ', self.frame)
             self.frameTime = time.time()
-            self.frame = (self.frame + 1) % 6
+            if self.state == Character_State_Move or Character_State_Idle:
+                self.frame = (self.frame + 1) % 6
+            elif self.state == Character_State_Attack:
+                print('frame plus')
+                self.frame += 1
+                if self.frame <= 3:
+                    if self.isLeftButton or self.isRightButton or self.isUpButton or self.isDownButton:
+                        self.state = Character_State_Move
+                    else:
+                        self.state = Character_State_Idle
 
         if self.isLeftButton or self.isRightButton or self.isUpButton or self.isDownButton:
-            if self.state == Character_State_Attack or Character_State_Attacked or Character_State_Roll:
+            if self.state != Character_State_Attack or Character_State_Attacked or Character_State_Roll:
                 self.state = Character_State_Move
                 if self.isLeftButton:
                     self.direction = Character_Direction_Left
@@ -134,6 +152,6 @@ class Hero:
                 elif self.isRightButton:
                     self.direction = Character_Direction_Right
         else:
-            if self.state == Character_State_Attack or Character_State_Attacked or Character_State_Roll:
+            if self.state != Character_State_Attack or Character_State_Attacked or Character_State_Roll:
                 self.state = Character_State_Idle
 
