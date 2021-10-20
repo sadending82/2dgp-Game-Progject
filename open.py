@@ -1,8 +1,14 @@
 from pico2d import *
 import Character
+from game_framework import *
 
 Window_Width, Window_Height = 800, 600
+open_canvas(Window_Width, Window_Height)
+izuna = Character.Hero()
+izuna.state = Character.Character_State_Idle
+base_dungeon = load_image('dungeon1_base.png')
 
+def enter(self):
 
 def handle_events():
     global Program_Running
@@ -32,10 +38,7 @@ def handle_events():
 
 
 # 기본적인 초기화
-open_canvas(Window_Width, Window_Height)
-izuna = Character.Hero()
-izuna.state = Character.Character_State_Idle
-base_dungeon = load_image('dungeon1_base.png')
+
 Program_Running = True
 
 while Program_Running:
