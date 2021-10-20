@@ -105,6 +105,33 @@ class Hero:
                     self.image.clip_draw(145, 1195-231, 25, 32, self.x-5, self.y)
                 elif self.frame == 3:
                     self.image.clip_draw(145, 1195-231, 25, 32, self.x-5, self.y)
+            if self.direction == Character_Direction_Up:
+                if self.frame == 0:
+                    self.image.clip_draw(119, 1195-33, 19, 32, self.x, self.y)
+                elif self.frame == 1:
+                    self.image.clip_draw(141, 1195-33, 23, 32, self.x+4, self.y)
+                elif self.frame == 2:
+                    self.image.clip_draw(141, 1195-33, 23, 32, self.x+4, self.y)
+                elif self.frame == 3:
+                    self.image.clip_draw(141, 1195-33, 23, 32, self.x+4, self.y)
+            if self.direction == Character_Direction_Right:
+                if self.frame == 0:
+                    self.image.clip_draw(120, 1195-99, 21, 32, self.x, self.y)
+                elif self.frame == 1:
+                    self.image.clip_draw(144, 1195-99, 23, 32, self.x+4, self.y)
+                elif self.frame == 2:
+                    self.image.clip_draw(144, 1195-99, 23, 32, self.x+4, self.y)
+                elif self.frame == 3:
+                    self.image.clip_draw(144, 1195-99, 23, 32, self.x+4, self.y)
+            if self.direction == Character_Direction_Down:
+                if self.frame == 0:
+                    self.image.clip_draw(124, 1195-165, 20, 32, self.x, self.y)
+                elif self.frame == 1:
+                    self.image.clip_draw(147, 1195-165, 20, 32, self.x, self.y)
+                elif self.frame == 2:
+                    self.image.clip_draw(147, 1195-165, 20, 32, self.x, self.y)
+                elif self.frame == 3:
+                    self.image.clip_draw(147, 1195-16, 20, 32, self.x, self.y)
 
     def Move(self):
         if not self.BoundBoxCheck():
@@ -138,8 +165,8 @@ class Hero:
                     else:
                         self.state = Character_State_Idle
 
-        if self.isLeftButton or self.isRightButton or self.isUpButton or self.isDownButton:
-            if self.state != Character_State_Attack or Character_State_Attacked or Character_State_Roll:
+        if self.state != Character_State_Attack:
+            if self.isLeftButton or self.isRightButton or self.isUpButton or self.isDownButton:
                 self.state = Character_State_Move
                 print('ChangeToMove')
                 if self.isLeftButton:
@@ -150,9 +177,7 @@ class Hero:
                     self.direction = Character_Direction_Down
                 elif self.isRightButton:
                     self.direction = Character_Direction_Right
-        else:
-            if self.state != Character_State_Attack or self.state != Character_State_Attacked or self.state != Character_State_Roll:
-                # 이 부분에서 오류 나는 듯
+            else:
                 self.state = Character_State_Idle
                 print('ChangeToIdle')
 
