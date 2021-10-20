@@ -31,22 +31,18 @@ def handle_events():
                 izuna.isDownButton = False
 
 
-
-
-    pass
-
-
 # 기본적인 초기화
 open_canvas(Window_Width, Window_Height)
 izuna = Character.Hero()
 izuna.state = Character.Character_State_Idle
+base_dungeon = load_image('dungeon1_base.png')
 Program_Running = True
 
 while Program_Running:
 
     clear_canvas()
+    base_dungeon.draw(Window_Width // 2, Window_Height // 2, Window_Width, Window_Height)
     izuna.Draw_Character()
-
 
     update_canvas()
 
