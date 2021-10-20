@@ -2,13 +2,24 @@ from pico2d import *
 import Character
 from game_framework import *
 
-Window_Width, Window_Height = 800, 600
-open_canvas(Window_Width, Window_Height)
-izuna = Character.Hero()
-izuna.state = Character.Character_State_Idle
-base_dungeon = load_image('dungeon1_base.png')
+Window_Width = 800
+Window_Height = 600
+izuna = None
+base_dungeon = None
 
-def enter(self):
+
+def enter():
+    global izuna, base_dungeon
+    izuna = Character.Hero()
+    izuna.state = Character.Character_State_Idle
+    base_dungeon = load_image('dungeon1_base.png')
+
+
+def exit():
+    global izuna, base_dungeon
+    del(izuna)
+    del(base_dungeon)
+
 
 def handle_events():
     global Program_Running
@@ -37,25 +48,18 @@ def handle_events():
                 izuna.isDownButton = False
 
 
-# 기본적인 초기화
-
-Program_Running = True
-
-while Program_Running:
-
-    clear_canvas()
-    base_dungeon.draw(Window_Width // 2, Window_Height // 2, Window_Width, Window_Height)
-    izuna.Draw_Character()
-
-    update_canvas()
+def update():
 
     izuna.Move()
     izuna.Set_Hero_New()
-    delay(0.013)
 
     handle_events()
 
-close_canvas()
+def draw():
+    clear_canvas()
+    base_dungeon.draw(Window_Width // 2, Window_Height // 2, Window_Width, Window_Height)
+    izuna.Draw_Character()
+    update_canvas()
 
 
 
