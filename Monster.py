@@ -91,16 +91,16 @@ class Bunnia:
         if self.state == Monster_State_Move:
             if 2 <= self.frame <= 3:
                 if self.direction == Left:
-                    if self.x >= 81:
+                    if self.x >= 100:
                         self.x -= 3
                 elif self.direction == Up:
-                    if self.y <= 480:
+                    if self.y <= 500:
                         self.y += 3
                 elif self.direction == Right:
-                    if self.x <= 680:
+                    if self.x <= 700:
                         self.x += 3
                 elif self.direction == Down:
-                    if self.y >= 81:
+                    if self.y >= 100:
                         self.y -= 3
 
     def update(self):

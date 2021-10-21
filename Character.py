@@ -140,13 +140,17 @@ class Hero:
         if not self.BoundBoxCheck():
             if self.state == Character_State_Move:
                 if self.direction == Character_Direction_Left:
-                    self.x -= 2 * self.speed
+                    if self.x > 120:
+                        self.x -= 2 * self.speed
                 if self.direction == Character_Direction_Right:
-                    self.x += 2 * self.speed
+                    if self.x < 700:
+                        self.x += 2 * self.speed
                 if self.direction == Character_Direction_Up:
-                    self.y += 2 * self.speed
+                    if self.y < 500:
+                        self.y += 2 * self.speed
                 if self.direction == Character_Direction_Down:
-                    self.y -= 2 * self.speed
+                    if self.y > 100:
+                        self.y -= 2 * self.speed
 
         nowTime = time.time()
 
