@@ -60,17 +60,21 @@ def update():
     for i in MonsterStack:
         i.move()
         i.update()
-    izuna.Move()
-    izuna.Set_Hero_New()
+    izuna.update()
     handle_events()
 
 def draw():
     global izuna, MonsterStack, base_dungeon
     clear_canvas()
     base_dungeon.draw(Window_Width // 2, Window_Height // 2, Window_Width, Window_Height)
-    izuna.Draw_Character()
     for i in MonsterStack:
-        i.draw()
+        if i.y > izuna.y:
+            i.draw()
+    izuna.draw()
+    for i in MonsterStack:
+        if i.y <= izuna.y:
+            i.draw()
+
     update_canvas()
 
 

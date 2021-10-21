@@ -29,7 +29,7 @@ class Hero:
         self.isUpButton = False
         self.speed = 1
 
-    def Draw_Character(self):
+    def draw(self):
         if self.state == Character_State_Idle:
 
             if self.direction == Character_Direction_Left:
@@ -132,7 +132,11 @@ class Hero:
                 elif self.frame == 3:
                     self.image.clip_draw(147, 1195-16, 20, 32, self.x, self.y)
 
-    def Move(self):
+    def BoundBoxCheck(self):
+        return False
+
+    def update(self):
+
         if not self.BoundBoxCheck():
             if self.state == Character_State_Move:
                 if self.direction == Character_Direction_Left:
@@ -143,11 +147,6 @@ class Hero:
                     self.y += 2 * self.speed
                 if self.direction == Character_Direction_Down:
                     self.y -= 2 * self.speed
-
-    def BoundBoxCheck(self):
-        return False
-
-    def Set_Hero_New(self):
 
         nowTime = time.time()
 
