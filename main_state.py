@@ -1,18 +1,21 @@
 from pico2d import *
 import Character
+import Monster
 import time
 from game_framework import *
 
 Window_Width = 800
 Window_Height = 600
 izuna = None
+MonsterStack = None
 base_dungeon = None
 
 
 def enter():
-    global izuna, base_dungeon
+    global izuna, MonsterStack, base_dungeon
     izuna = Character.Hero()
     izuna.state = Character.Character_State_Idle
+    MonsterStack = [Monster.Bunnia() for n in range(0, 4)]
     base_dungeon = load_image('dungeon1_base.png')
 
 
@@ -20,6 +23,7 @@ def exit():
     global izuna, base_dungeon
     del(izuna)
     del(base_dungeon)
+    del(MonsterStack)
 
 
 def handle_events():
@@ -40,7 +44,6 @@ def handle_events():
                 izuna.state = Character.Character_State_Attack
                 izuna.frame = 0
                 izuna.frameTime = time.time()
-                print('input j ', izuna.state, izuna.frame)
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_a:
                 izuna.isLeftButton = False
@@ -53,19 +56,21 @@ def handle_events():
 
 
 def update():
-
+    global izuna, MonsterStack
+    for i in MonsterStack:
+        i.move()
+        i.update()
     izuna.Move()
-    print('Move ', izuna.state, izuna.frame)
     izuna.Set_Hero_New()
-    print('SetHero ', izuna.state, izuna.frame)
     handle_events()
-    if izuna.state == Character.Character_State_Attack:
-        print('j', izuna.state)
 
 def draw():
+    global izuna, MonsterStack, base_dungeon
     clear_canvas()
     base_dungeon.draw(Window_Width // 2, Window_Height // 2, Window_Width, Window_Height)
     izuna.Draw_Character()
+    for i in MonsterStack:
+        i.draw()
     update_canvas()
 
 

@@ -95,7 +95,6 @@ class Hero:
                 elif self.frame == 5:
                     self.image.clip_draw(43, 1195-165, 16, 32, self.x, self.y)
         elif self.state == Character_State_Attack:
-            print("i'm here")
             if self.direction == Character_Direction_Left:
                 if self.frame == 0:
                     self.image.clip_draw(122, 1195-231, 20, 32, self.x, self.y)
@@ -157,7 +156,6 @@ class Hero:
             if self.state == Character_State_Move or Character_State_Idle:
                 self.frame = (self.frame + 1) % 6
             elif self.state == Character_State_Attack:
-                print('frame plus')
                 self.frame += 1
                 if self.frame >= 3:
                     if self.isLeftButton or self.isRightButton or self.isUpButton or self.isDownButton:
@@ -168,7 +166,6 @@ class Hero:
         if self.state != Character_State_Attack:
             if self.isLeftButton or self.isRightButton or self.isUpButton or self.isDownButton:
                 self.state = Character_State_Move
-                print('ChangeToMove')
                 if self.isLeftButton:
                     self.direction = Character_Direction_Left
                 elif self.isUpButton:
@@ -179,5 +176,4 @@ class Hero:
                     self.direction = Character_Direction_Right
             else:
                 self.state = Character_State_Idle
-                print('ChangeToIdle')
 
