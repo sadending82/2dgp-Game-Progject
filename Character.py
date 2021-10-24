@@ -11,7 +11,7 @@ Character_Direction_Up = 1
 Character_Direction_Right = 2
 Character_Direction_Down = 3
 
-Window_Width, Window_Height = 800, 600
+Window_Width, Window_Height = get_canvas_width(), get_canvas_height()
 
 
 class Hero:
@@ -19,6 +19,7 @@ class Hero:
         self.x = Window_Width // 2
         self.y = Window_Height // 2
         self.state = Character_State_Idle
+        self.Hp = 100
         self.frame = 0
         self.direction = Character_Direction_Right
         self.image = load_image('izuna_cheking2.png')

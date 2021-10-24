@@ -4,8 +4,8 @@ import Monster
 import time
 from game_framework import *
 
-Window_Width = 800
-Window_Height = 600
+Window_Width = get_canvas_width()
+Window_Height = get_canvas_height()
 izuna = None
 MonsterStack = None
 base_dungeon = None
