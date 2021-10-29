@@ -20,6 +20,7 @@ class Hero:
         self.y = Window_Height // 2
         self.state = Character_State_Idle
         self.Hp = 100
+        self.Gold = 0
         self.frame = 0
         self.direction = Character_Direction_Right
         self.image = load_image('izuna_cheking2.png')

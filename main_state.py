@@ -1,6 +1,7 @@
 from pico2d import *
 import Character
 import Monster
+from save_and_load import *
 import time
 from game_framework import *
 
@@ -9,6 +10,7 @@ Window_Height = get_canvas_height()
 izuna = None
 MonsterStack = None
 base_dungeon = None
+isDoorOpen = False
 
 
 def enter():
@@ -21,6 +23,7 @@ def enter():
 
 def exit():
     global izuna, base_dungeon
+    save_data(izuna, 0)
     del(izuna)
     del(base_dungeon)
     del(MonsterStack)
@@ -44,6 +47,12 @@ def handle_events():
                 izuna.state = Character.Character_State_Attack
                 izuna.frame = 0
                 izuna.frameTime = time.time()
+            elif event.key == SDLK_TAB:
+                save_data(izuna, izuna.direction)
+            elif event.key == SDLK_t:
+                izuna = load_data()
+            elif event.key == SDLK_ESCAPE:
+                quit()
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_a:
                 izuna.isLeftButton = False
