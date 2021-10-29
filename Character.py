@@ -29,6 +29,7 @@ class Hero:
         self.isRightButton = False
         self.isDownButton = False
         self.isUpButton = False
+        self.BoundBox = [self.x, self.y + 32, self.x + 16, self.y]
         self.speed = 1
 
     def draw(self):
@@ -153,6 +154,8 @@ class Hero:
                 if self.direction == Character_Direction_Down:
                     if self.y > 100:
                         self.y -= 2 * self.speed
+
+        self.BoundBox = [self.x, self.y + 32, self.x + 16, self.y]
 
         nowTime = time.time()
 
