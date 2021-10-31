@@ -29,7 +29,13 @@ class Hero:
         self.isRightButton = False
         self.isDownButton = False
         self.isUpButton = False
-        self.BoundBox = [self.x, self.y + 32, self.x + 16, self.y]
+        self.BoundBox = {
+            'body': [self.x, self.y + 32, self.x + 16, self.y],
+            'attack_left': [self.x - 16, self.y + 32, self.x, self.y],
+            'attack_right': [self.x + 16, self.y + 32, self.x + 32, self.y],
+            'attack_up': [self.x, self.y + 48, self.x + 16, self.y + 32],
+            'attack_down': [self.x,self.y - 16, self.x + 16, self.y]
+        }
         self.speed = 1
 
     def draw(self):

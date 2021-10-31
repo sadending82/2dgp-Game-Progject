@@ -22,6 +22,7 @@ class Bunnia:
         self.frameTime = time.time()
         self.direction = random.randint(0, 3)
         self.image = load_image('Bunnia.png')
+        self.bound_box = [self.x, self.y, self.x+32, self.y+32]
 
     def draw(self):
         if self.state == Monster_State_Idle:

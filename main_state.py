@@ -1,6 +1,7 @@
 from pico2d import *
 import Character
 import Monster
+import map
 from save_and_load import *
 import time
 from game_framework import *
@@ -18,7 +19,7 @@ def enter():
     izuna = Character.Hero()
     izuna.state = Character.Character_State_Idle
     MonsterStack = [Monster.Bunnia() for n in range(0, 4)]
-    base_dungeon = load_image('dungeon1_base.png')
+    base_dungeon = map.FirstDungeonMap(map.Door_Normal, map.Door_Normal, map.Door_Normal, map.Door_Normal)
 
 
 def exit():
@@ -32,6 +33,7 @@ def exit():
 def handle_events():
     global Program_Running
     global izuna
+    global isDoorOpen
     events = get_events()
     for event in events:
         if event.type == SDL_KEYDOWN:
@@ -51,6 +53,11 @@ def handle_events():
                 save_data(izuna, izuna.direction)
             elif event.key == SDLK_t:
                 izuna = load_data()
+            elif event.key == SDLK_y:
+                if isDoorOpen:
+                    isDoorOpen = False
+                else:
+                    isDoorOpen = True
             elif event.key == SDLK_ESCAPE:
                 quit()
         elif event.type == SDL_KEYUP:
@@ -75,7 +82,7 @@ def update():
 def draw():
     global izuna, MonsterStack, base_dungeon
     clear_canvas()
-    base_dungeon.draw(Window_Width // 2, Window_Height // 2, Window_Width, Window_Height)
+    base_dungeon.draw(isDoorOpen)
     for i in MonsterStack:
         if i.y > izuna.y:
             i.draw()
