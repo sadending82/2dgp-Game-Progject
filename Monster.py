@@ -14,6 +14,7 @@ Down = 3
 
 
 class Bunnia:
+    image = None
     def __init__(self):
         self.x = random.randint(81, 680)
         self.y = random.randint(81, 480)
@@ -21,8 +22,11 @@ class Bunnia:
         self.frame = 0
         self.frameTime = time.time()
         self.direction = random.randint(0, 3)
-        self.image = load_image('Bunnia.png')
         self.bound_box = [self.x, self.y, self.x+32, self.y+32]
+        if Bunnia.image is None:
+            Bunnia.image = load_image('Bunnia.png')
+
+
 
     def draw(self):
         if self.state == Monster_State_Idle:
