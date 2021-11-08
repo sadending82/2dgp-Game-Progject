@@ -19,7 +19,10 @@ class Hero:
         self.x = Window_Width // 2
         self.y = Window_Height // 2
         self.state = Character_State_Idle
+        self.MaxHp = 100
         self.Hp = 100
+        self.hp_bar = load_image('HP_Bar.png')
+        self.hp_point = load_image('HP_Point.png')
         self.Gold = 0
         self.frame = 0
         self.direction = Character_Direction_Right
@@ -34,13 +37,13 @@ class Hero:
             'attack_left': [self.x - 16, self.y + 32, self.x, self.y],
             'attack_right': [self.x + 16, self.y + 32, self.x + 32, self.y],
             'attack_up': [self.x, self.y + 48, self.x + 16, self.y + 32],
-            'attack_down': [self.x,self.y - 16, self.x + 16, self.y]
+            'attack_down': [self.x, self.y - 16, self.x + 16, self.y]
         }
         self.speed = 1
 
     def draw(self):
-        if self.state == Character_State_Idle:
 
+        if self.state == Character_State_Idle:
             if self.direction == Character_Direction_Left:
                 self.image.clip_draw(43, 1195 - 231, 16, 32, self.x, self.y)
             elif self.direction == Character_Direction_Up:
@@ -49,7 +52,6 @@ class Hero:
                 self.image.clip_draw(62, 1195 - 99, 16, 32, self.x, self.y)
             elif self.direction == Character_Direction_Down:
                 self.image.clip_draw(43, 1195 - 165, 16, 32, self.x, self.y)
-
         elif self.state == Character_State_Move:
             if self.direction == Character_Direction_Left:
                 if self.frame == 0:
@@ -141,25 +143,29 @@ class Hero:
                 elif self.frame == 3:
                     self.image.clip_draw(147, 1195-16, 20, 32, self.x, self.y)
 
+        self.hp_bar.draw(120, 580)
+        cur_hp = int((150 * (1 - ((self.MaxHp - self.Hp)/self.MaxHp))))
+        self.hp_point.clip_draw(0, 0, cur_hp, 30, 119, 580)
+
+
     def BoundBoxCheck(self):
         return False
 
     def update(self):
 
-        if not self.BoundBoxCheck():
-            if self.state == Character_State_Move:
-                if self.direction == Character_Direction_Left:
-                    if self.x > 120:
-                        self.x -= 2 * self.speed
-                if self.direction == Character_Direction_Right:
-                    if self.x < 700:
-                        self.x += 2 * self.speed
-                if self.direction == Character_Direction_Up:
-                    if self.y < 500:
-                        self.y += 2 * self.speed
-                if self.direction == Character_Direction_Down:
-                    if self.y > 100:
-                        self.y -= 2 * self.speed
+        if self.state == Character_State_Move:
+            if self.direction == Character_Direction_Left:
+                if self.x > 120:
+                    self.x -= 2 * self.speed
+            if self.direction == Character_Direction_Right:
+                if self.x < 700:
+                    self.x += 2 * self.speed
+            if self.direction == Character_Direction_Up:
+                if self.y < 500:
+                    self.y += 2 * self.speed
+            if self.direction == Character_Direction_Down:
+                if self.y > 100:
+                    self.y -= 2 * self.speed
 
         self.BoundBox = [self.x, self.y + 32, self.x + 16, self.y]
 
