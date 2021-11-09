@@ -6,6 +6,7 @@ Door_Boss = 2
 
 Window_Height, Window_Width = get_canvas_height(), get_canvas_width()
 
+
 class FirstDungeonMap:
     def __init__(self, isLeftDoor, isUpDoor, isRightDoor, isDownDoor):
         self.image = load_image('dungeon1_base.png')

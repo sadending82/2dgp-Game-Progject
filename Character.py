@@ -32,13 +32,14 @@ class Hero:
         self.isRightButton = False
         self.isDownButton = False
         self.isUpButton = False
-        self.BoundBox = {
+        self.bound_box = {
             'body': [self.x, self.y + 32, self.x + 16, self.y],
             'attack_left': [self.x - 16, self.y + 32, self.x, self.y],
             'attack_right': [self.x + 16, self.y + 32, self.x + 32, self.y],
             'attack_up': [self.x, self.y + 48, self.x + 16, self.y + 32],
             'attack_down': [self.x, self.y - 16, self.x + 16, self.y]
         }
+        self.eff_bound_box = []
         self.speed = 1
 
     def draw(self):
@@ -147,25 +148,28 @@ class Hero:
         cur_hp = int((150 * (1 - ((self.MaxHp - self.Hp)/self.MaxHp))))
         self.hp_point.clip_draw(0, 0, cur_hp, 30, 119, 580)
 
-
-    def BoundBoxCheck(self):
+    def bound_box_check(self):
         return False
 
     def update(self):
 
         if self.state == Character_State_Move:
             if self.direction == Character_Direction_Left:
-                if self.x > 120:
-                    self.x -= 2 * self.speed
-            if self.direction == Character_Direction_Right:
-                if self.x < 700:
+                self.x -= 2 * self.speed
+                if self.bound_box_check():
                     self.x += 2 * self.speed
+            if self.direction == Character_Direction_Right:
+                self.x += 2 * self.speed
+                if self.bound_box_check():
+                    self.x -= 2 * self.speed
             if self.direction == Character_Direction_Up:
-                if self.y < 500:
-                    self.y += 2 * self.speed
-            if self.direction == Character_Direction_Down:
-                if self.y > 100:
+                self.y += 2 * self.speed
+                if self.bound_box_check():
                     self.y -= 2 * self.speed
+            if self.direction == Character_Direction_Down:
+                self.y -= 2 * self.speed
+                if self.bound_box_check():
+                    self.y += 2 * self.speed
 
         self.BoundBox = [self.x, self.y + 32, self.x + 16, self.y]
 

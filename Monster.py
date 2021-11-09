@@ -92,6 +92,9 @@ class Bunnia:
                 elif self.frame == 5:
                     self.image.clip_draw(1, 372 - 371, 32, 32, self.x, self.y)
 
+    def bound_box_check(self, map):
+        pass
+
     def move(self):
         if self.state == Monster_State_Move:
             if 2 <= self.frame <= 3:
