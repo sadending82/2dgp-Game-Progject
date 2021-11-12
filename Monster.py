@@ -95,7 +95,8 @@ class Bunnia:
     def bound_box_check(self, map):
         pass
 
-    def move(self):
+    def update(self):
+
         if self.state == Monster_State_Move:
             if 2 <= self.frame <= 3:
                 if self.direction == Left:
@@ -110,8 +111,6 @@ class Bunnia:
                 elif self.direction == Down:
                     if self.y >= 100:
                         self.y -= 3
-
-    def update(self):
 
         nowTime = time.time()
 

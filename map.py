@@ -18,6 +18,7 @@ class FirstDungeonMap:
         self.open_door_right_image = load_image('normal_door_right_open.png')
         self.open_door_up_image = load_image('normal_door_up_open.png')
         self.open_door_down_image = load_image('normal_door_down_open.png')
+        self.is_door_open = False
         self.up_door = isUpDoor
         self.left_door = isLeftDoor
         self.down_door = isRightDoor
@@ -31,9 +32,12 @@ class FirstDungeonMap:
             'door_open': [[0, 600 - 350, 60, 600 - 250], [350, 600 - 60, 600, 450],
                           [740, 600 - 350, 800, 600 - 250], [350, 0, 450, 600 - 540]]}
 
-    def draw(self, isDoorOpen):
+    def update(self):
+        pass
+
+    def draw(self):
         self.image.draw(Window_Width // 2, Window_Height // 2, Window_Width, Window_Height)
-        if not isDoorOpen:
+        if not self.is_door_open:
             if self.left_door == Door_Normal or self.left_door == Door_Boss:
                 self.door_left_image.draw(0 + (82 // 2), 250 + (105 // 2))
             if self.up_door == Door_Normal or self.up_door == Door_Boss:
