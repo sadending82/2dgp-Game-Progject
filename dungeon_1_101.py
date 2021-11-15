@@ -22,7 +22,11 @@ def enter():
         izuna.state = Character.Character_State_Idle
     else:
         izuna = return_object(Character.Hero)
-    MonsterStack = [Monster.Bunnia() for n in range(0, 4)]
+    MonsterStack = []
+    for i in range(4):
+        MonsterStack.append(Monster.Bunnia())
+    for i in range(4):
+        MonsterStack.append(Monster.Soul())
     base_dungeon = map.FirstDungeonMap(map.Door_Normal, map.Door_Normal, map.Door_Normal, map.Door_Normal)
 
     add_object(izuna, 1)
@@ -37,7 +41,6 @@ def exit():
     del(izuna)
     del(base_dungeon)
     del(MonsterStack)
-
 
 
 def handle_events():
@@ -69,6 +72,8 @@ def handle_events():
                     base_dungeon.is_door_open = True
             elif event.key == SDLK_ESCAPE:
                 quit()
+            elif event.key == SDLK_LSHIFT:
+                izuna.speed = 2
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_a:
                 izuna.isLeftButton = False
@@ -78,6 +83,59 @@ def handle_events():
                 izuna.isUpButton = False
             elif event.key == SDLK_s:
                 izuna.isDownButton = False
+            elif event.key == SDLK_LSHIFT:
+                izuna.speed = 1
+
+
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b:
+        return False
+    if right_a < left_b:
+        return False
+    if top_a < bottom_b:
+        return False
+    if bottom_a > top_b:
+        return False
+
+    return True
+
+
+def collide_with_map(a, wall, category, count):
+    for i in range(count):
+        left_a, bottom_a, right_a, top_a = a.get_bb()
+        left_wall, bottom_wall, right_wall, top_wall = wall.get_bb(category, count)
+
+        if left_a > right_wall:
+            return False
+        if right_a < left_wall:
+            return False
+        if top_a < bottom_wall:
+            return False
+        if bottom_a > top_wall:
+            return False
+
+    return True
+
+
+def collide_with_attack(chara, b):
+    left_a, bottom_a, right_a, top_a = chara.get_attack_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b:
+        return False
+    if right_a < left_b:
+        return False
+    if top_a < bottom_b:
+        return False
+    if bottom_a > top_b:
+        return False
+
+    print(True)
+    return True
+
 
 
 def update():
@@ -85,7 +143,14 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
     game_world.sort_objects(1)
+
+    for monster in MonsterStack:
+       if collide(izuna, monster):
+           izuna.Hp -= monster.damage
+
+    delay(0.005)
     handle_events()
+
 
 def draw():
     global izuna, MonsterStack, base_dungeon

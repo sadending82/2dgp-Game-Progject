@@ -1,4 +1,5 @@
 from pico2d import *
+import math
 import time
 
 Character_State_Idle = 0
@@ -25,8 +26,12 @@ class Hero:
         self.hp_point = load_image('HP_Point.png')
         self.Gold = 0
         self.frame = 0
+        self.damage = 1
+        self.is_invincible = False
+        self.invincible_timer = 0.0
         self.direction = Character_Direction_Right
         self.image = load_image('izuna_cheking2.png')
+        self.punch_image = load_image('punch.png')
         self.frameTime = time.time()
         self.isLeftButton = False
         self.isRightButton = False
@@ -34,10 +39,10 @@ class Hero:
         self.isUpButton = False
         self.bound_box = {
             'body': [self.x - 8, self.y - 16, self.x + 8, self.y + 16],
-            'attack_left': [self.x - 16, self.y - 16, self.x + 8, self.y + 16],
-            'attack_right': [self.x - 8, self.y - 16, self.x + 16, self.y + 16],
-            'attack_up': [self.x - 8, self.y - 16, self.x + 8, self.y + 24],
-            'attack_down': [self.x - 8, self.y - 24, self.x + 8, self.y + 16],
+            'attack_left': [self.x - 24, self.y - 8, self.x - 8, self.y + 8],
+            'attack_right': [self.x + 8, self.y - 8, self.x + 24, self.y + 8],
+            'attack_up': [self.x - 8, self.y + 8, self.x + 8, self.y + 24],
+            'attack_down': [self.x - 8, self.y - 24, self.x + 8, self.y - 8],
         }
         self.eff_bound_box = []
         self.speed = 1
@@ -112,59 +117,99 @@ class Hero:
                     self.image.clip_draw(122, 1195-231, 20, 32, self.x, self.y)
                 elif self.frame == 1:
                     self.image.clip_draw(145, 1195-231, 25, 32, self.x-5, self.y)
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(180), '',
+                        (self.bound_box['attack_left'][0] + self.bound_box['attack_left'][2])//2,
+                        (self.bound_box['attack_left'][1] + self.bound_box['attack_left'][3])//2)
                 elif self.frame == 2:
                     self.image.clip_draw(145, 1195-231, 25, 32, self.x-5, self.y)
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(180), '',
+                        (self.bound_box['attack_left'][0] + self.bound_box['attack_left'][2])//2,
+                        (self.bound_box['attack_left'][1] + self.bound_box['attack_left'][3])//2)
                 elif self.frame == 3:
                     self.image.clip_draw(145, 1195-231, 25, 32, self.x-5, self.y)
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(180), '',
+                        (self.bound_box['attack_left'][0] + self.bound_box['attack_left'][2])//2,
+                        (self.bound_box['attack_left'][1] + self.bound_box['attack_left'][3])//2)
             if self.direction == Character_Direction_Up:
                 if self.frame == 0:
                     self.image.clip_draw(119, 1195-33, 19, 32, self.x, self.y)
                 elif self.frame == 1:
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(90), '',
+                        (self.bound_box['attack_up'][0] + self.bound_box['attack_up'][2])//2,
+                        (self.bound_box['attack_up'][1] + self.bound_box['attack_up'][3])//2)
                     self.image.clip_draw(141, 1195-33, 23, 32, self.x+4, self.y)
                 elif self.frame == 2:
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(90), '',
+                        (self.bound_box['attack_up'][0] + self.bound_box['attack_up'][2])//2,
+                        (self.bound_box['attack_up'][1] + self.bound_box['attack_up'][3])//2)
                     self.image.clip_draw(141, 1195-33, 23, 32, self.x+4, self.y)
                 elif self.frame == 3:
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(90), '',
+                        (self.bound_box['attack_up'][0] + self.bound_box['attack_up'][2])//2,
+                        (self.bound_box['attack_up'][1] + self.bound_box['attack_up'][3])//2)
                     self.image.clip_draw(141, 1195-33, 23, 32, self.x+4, self.y)
             if self.direction == Character_Direction_Right:
                 if self.frame == 0:
                     self.image.clip_draw(120, 1195-99, 21, 32, self.x, self.y)
                 elif self.frame == 1:
                     self.image.clip_draw(144, 1195-99, 23, 32, self.x+4, self.y)
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(0), '',
+                        (self.bound_box['attack_right'][0] + self.bound_box['attack_right'][2])//2,
+                        (self.bound_box['attack_right'][1] + self.bound_box['attack_right'][3])//2)
                 elif self.frame == 2:
                     self.image.clip_draw(144, 1195-99, 23, 32, self.x+4, self.y)
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(0), '',
+                        (self.bound_box['attack_right'][0] + self.bound_box['attack_right'][2])//2,
+                        (self.bound_box['attack_right'][1] + self.bound_box['attack_right'][3])//2)
                 elif self.frame == 3:
                     self.image.clip_draw(144, 1195-99, 23, 32, self.x+4, self.y)
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(0), '',
+                        (self.bound_box['attack_right'][0] + self.bound_box['attack_right'][2])//2,
+                        (self.bound_box['attack_right'][1] + self.bound_box['attack_right'][3])//2)
             if self.direction == Character_Direction_Down:
                 if self.frame == 0:
                     self.image.clip_draw(124, 1195-165, 20, 32, self.x, self.y)
                 elif self.frame == 1:
                     self.image.clip_draw(147, 1195-165, 20, 32, self.x, self.y)
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(-90), '',
+                        (self.bound_box['attack_down'][0] + self.bound_box['attack_down'][2])//2,
+                        (self.bound_box['attack_down'][1] + self.bound_box['attack_down'][3])//2)
                 elif self.frame == 2:
                     self.image.clip_draw(147, 1195-165, 20, 32, self.x, self.y)
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(-90), '',
+                        (self.bound_box['attack_down'][0] + self.bound_box['attack_down'][2])//2,
+                        (self.bound_box['attack_down'][1] + self.bound_box['attack_down'][3])//2)
                 elif self.frame == 3:
                     self.image.clip_draw(147, 1195-16, 20, 32, self.x, self.y)
-        draw_rectangle(*self.get_bb())
+                    self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(-90), '',
+                        (self.bound_box['attack_down'][0] + self.bound_box['attack_down'][2])//2,
+                        (self.bound_box['attack_down'][1] + self.bound_box['attack_down'][3])//2)
+        # draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_attack_bb())
         self.hp_bar.draw(120, 580)
         cur_hp = int((150 * (1 - ((self.MaxHp - self.Hp)/self.MaxHp))))
-        self.hp_point.clip_draw(0, 0, cur_hp, 30, 119, 580)
+        self.hp_point.clip_draw(0, 0, cur_hp, 30, 94 - (self.MaxHp - cur_hp)//2, 580)
 
     def get_bb(self):
-        if not self.state == Character_State_Attack:
-            return self.bound_box['body'][0], self.bound_box['body'][1],\
-                   self.bound_box['body'][2], self.bound_box['body'][3]
-        else:
-            if self.direction == Character_Direction_Left:
-                return self.bound_box['attack_left'][0], self.bound_box['attack_left'][1], \
-                       self.bound_box['attack_left'][2], self.bound_box['attack_left'][3]
-            elif self.direction == Character_Direction_Right:
-                return self.bound_box['attack_right'][0], self.bound_box['attack_right'][1], \
-                       self.bound_box['attack_right'][2], self.bound_box['attack_right'][3]
-            elif self.direction == Character_Direction_Up:
-                return self.bound_box['attack_up'][0], self.bound_box['attack_up'][1], \
-                       self.bound_box['attack_up'][2], self.bound_box['attack_up'][3]
-            elif self.direction == Character_Direction_Down:
-                return self.bound_box['attack_down'][0], self.bound_box['attack_down'][1], \
-                       self.bound_box['attack_down'][2], self.bound_box['attack_down'][3]
+        return self.bound_box['body'][0], self.bound_box['body'][1],\
+               self.bound_box['body'][2], self.bound_box['body'][3]
+
+    def get_attack_bb(self):
+        if self.direction == Character_Direction_Left:
+            return self.bound_box['attack_left'][0], self.bound_box['attack_left'][1], \
+                   self.bound_box['attack_left'][2], self.bound_box['attack_left'][3]
+        elif self.direction == Character_Direction_Right:
+            return self.bound_box['attack_right'][0], self.bound_box['attack_right'][1], \
+                   self.bound_box['attack_right'][2], self.bound_box['attack_right'][3]
+        elif self.direction == Character_Direction_Up:
+            return self.bound_box['attack_up'][0], self.bound_box['attack_up'][1], \
+                   self.bound_box['attack_up'][2], self.bound_box['attack_up'][3]
+        elif self.direction == Character_Direction_Down:
+            return self.bound_box['attack_down'][0], self.bound_box['attack_down'][1], \
+                   self.bound_box['attack_down'][2], self.bound_box['attack_down'][3]
+
+    def attacked(self, damage):
+
 
     def update(self):
 
@@ -180,10 +225,10 @@ class Hero:
 
         self.bound_box = {
             'body': [self.x - 8, self.y - 16, self.x + 8, self.y + 16],
-            'attack_left': [self.x - 24, self.y - 16, self.x + 8, self.y + 16],
-            'attack_right': [self.x - 8, self.y - 16, self.x + 24, self.y + 16],
-            'attack_up': [self.x - 8, self.y - 16, self.x + 8, self.y + 32],
-            'attack_down': [self.x - 8, self.y - 32, self.x + 8, self.y + 16],
+            'attack_left': [self.x - 24, self.y - 8, self.x - 8, self.y + 8],
+            'attack_right': [self.x + 8, self.y - 8, self.x + 24, self.y + 8],
+            'attack_up': [self.x - 8, self.y + 8, self.x + 8, self.y + 24],
+            'attack_down': [self.x - 8, self.y - 24, self.x + 8, self.y - 8],
         }
 
         nowTime = time.time()

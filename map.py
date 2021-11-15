@@ -24,16 +24,19 @@ class FirstDungeonMap:
         self.down_door = isRightDoor
         self.right_door = isDownDoor
         self.bound_box = {
-            'wall': [[0, 600 - 518, 0 + 350, 600], [450, 600 - 518, 450 + 350, 600], [718, 600 - 350 - 168, 800, 350],
-                     [0, 600 - 350 - 168, 82, 350], [0, 600 - 167 - 83, 82, 600 - 83], [0, 600 - 60, 350, 600],
-                     [450, 600 - 60, 800, 600], [718, 600 - 250, 800, 600]],
-            'door': [[0, 600 - 350, 82, 600 - 250], [350, 600 - 82, 600, 450],
-                     [717, 600 - 350, 800, 600 - 250], [350, 0, 450, 600 - 518]],
-            'door_open': [[0, 600 - 350, 60, 600 - 250], [350, 600 - 60, 600, 450],
-                          [740, 600 - 350, 800, 600 - 250], [350, 0, 450, 600 - 540]]}
+            'wall': [[0, 0, 0 + 350, 82], [450, 0, 450 + 350, 600 - 518], [718, 82, 800, 250],
+                     [0, 82, 82, 250], [0, 350, 82, 540], [0, 540, 350, 600],
+                     [450, 540, 800, 600], [718, 350, 800, 540]],
+            'door': [[0, 250, 82, 350], [350, 540, 450, 600],
+                     [717, 250, 800, 350], [350, 0, 450, 82]]
+        }
 
     def update(self):
         pass
+
+    def get_bb(self, category, num):
+        return self.bound_box[category][num][0], self.bound_box[category][num][1],\
+               self.bound_box[category][num][2], self.bound_box[category][num][3]
 
     def draw(self):
         self.image.draw(Window_Width // 2, Window_Height // 2, Window_Width, Window_Height)
@@ -56,6 +59,11 @@ class FirstDungeonMap:
             if self.down_door == Door_Normal or self.down_door == Door_Boss:
                 self.open_door_down_image.draw(350 + (102 // 2), 0 + (85 // 2) + 1)
 
+        for i in range(8):
+            draw_rectangle(*self.get_bb('wall', i))
+
+        for i in range(4):
+            draw_rectangle(*self.get_bb('door', i))
 
 
 
