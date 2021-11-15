@@ -33,11 +33,11 @@ class Hero:
         self.isDownButton = False
         self.isUpButton = False
         self.bound_box = {
-            'body': [self.x, self.y + 32, self.x + 16, self.y],
-            'attack_left': [self.x - 16, self.y + 32, self.x, self.y],
-            'attack_right': [self.x + 16, self.y + 32, self.x + 32, self.y],
-            'attack_up': [self.x, self.y + 48, self.x + 16, self.y + 32],
-            'attack_down': [self.x, self.y - 16, self.x + 16, self.y]
+            'body': [self.x - 8, self.y - 16, self.x + 8, self.y + 16],
+            'attack_left': [self.x - 16, self.y - 16, self.x + 8, self.y + 16],
+            'attack_right': [self.x - 8, self.y - 16, self.x + 16, self.y + 16],
+            'attack_up': [self.x - 8, self.y - 16, self.x + 8, self.y + 24],
+            'attack_down': [self.x - 8, self.y - 24, self.x + 8, self.y + 16],
         }
         self.eff_bound_box = []
         self.speed = 1
@@ -143,35 +143,48 @@ class Hero:
                     self.image.clip_draw(147, 1195-165, 20, 32, self.x, self.y)
                 elif self.frame == 3:
                     self.image.clip_draw(147, 1195-16, 20, 32, self.x, self.y)
-
+        draw_rectangle(*self.get_bb())
         self.hp_bar.draw(120, 580)
         cur_hp = int((150 * (1 - ((self.MaxHp - self.Hp)/self.MaxHp))))
         self.hp_point.clip_draw(0, 0, cur_hp, 30, 119, 580)
 
-    def bound_box_check(self):
-        return False
+    def get_bb(self):
+        if not self.state == Character_State_Attack:
+            return self.bound_box['body'][0], self.bound_box['body'][1],\
+                   self.bound_box['body'][2], self.bound_box['body'][3]
+        else:
+            if self.direction == Character_Direction_Left:
+                return self.bound_box['attack_left'][0], self.bound_box['attack_left'][1], \
+                       self.bound_box['attack_left'][2], self.bound_box['attack_left'][3]
+            elif self.direction == Character_Direction_Right:
+                return self.bound_box['attack_right'][0], self.bound_box['attack_right'][1], \
+                       self.bound_box['attack_right'][2], self.bound_box['attack_right'][3]
+            elif self.direction == Character_Direction_Up:
+                return self.bound_box['attack_up'][0], self.bound_box['attack_up'][1], \
+                       self.bound_box['attack_up'][2], self.bound_box['attack_up'][3]
+            elif self.direction == Character_Direction_Down:
+                return self.bound_box['attack_down'][0], self.bound_box['attack_down'][1], \
+                       self.bound_box['attack_down'][2], self.bound_box['attack_down'][3]
 
     def update(self):
 
         if self.state == Character_State_Move:
             if self.direction == Character_Direction_Left:
                 self.x -= 2 * self.speed
-                if self.bound_box_check():
-                    self.x += 2 * self.speed
             if self.direction == Character_Direction_Right:
                 self.x += 2 * self.speed
-                if self.bound_box_check():
-                    self.x -= 2 * self.speed
             if self.direction == Character_Direction_Up:
                 self.y += 2 * self.speed
-                if self.bound_box_check():
-                    self.y -= 2 * self.speed
             if self.direction == Character_Direction_Down:
                 self.y -= 2 * self.speed
-                if self.bound_box_check():
-                    self.y += 2 * self.speed
 
-        self.BoundBox = [self.x, self.y + 32, self.x + 16, self.y]
+        self.bound_box = {
+            'body': [self.x - 8, self.y - 16, self.x + 8, self.y + 16],
+            'attack_left': [self.x - 24, self.y - 16, self.x + 8, self.y + 16],
+            'attack_right': [self.x - 8, self.y - 16, self.x + 24, self.y + 16],
+            'attack_up': [self.x - 8, self.y - 16, self.x + 8, self.y + 32],
+            'attack_down': [self.x - 8, self.y - 32, self.x + 8, self.y + 16],
+        }
 
         nowTime = time.time()
 
