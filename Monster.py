@@ -27,6 +27,7 @@ class Bunnia:
         self.frameTime = time.time()
         self.direction = random.randint(0, 3)
         self.bound_box = [self.x - 10, self.y - 14, self.x + 10, self.y + 14]
+        self.debug = False
         if Bunnia.image is None:
             Bunnia.image = load_image('Bunnia.png')
 
@@ -99,6 +100,11 @@ class Bunnia:
 
         draw_rectangle(*self.get_bb())
 
+    def dead(self):
+        self.x = -100
+        self.y = -100
+        self.bound_box = [self.x - 10, self.y - 14, self.x + 10, self.y + 14]
+
     def update(self):
 
         if self.state == Monster_State_Move:
@@ -132,6 +138,8 @@ class Bunnia:
                         self.direction = random.randint(0, 3)
 
         self.bound_box = [self.x - 10, self.y - 14, self.x + 10, self.y + 14]
+
+
 
 
 class Soul:
@@ -219,6 +227,11 @@ class Soul:
                     self.image.clip_draw(64, 201 - 160, 32, 32, self.x, self.y)
 
         draw_rectangle(*self.get_bb())
+
+    def dead(self):
+        self.x = -100
+        self.y = -100
+        self.bound_box = [self.x - 16, self.y - 16, self.x + 16, self.y + 16]
 
     def update(self):
 

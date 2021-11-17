@@ -21,14 +21,16 @@ class FirstDungeonMap:
         self.is_door_open = False
         self.up_door = isUpDoor
         self.left_door = isLeftDoor
-        self.down_door = isRightDoor
-        self.right_door = isDownDoor
+        self.down_door = isDownDoor
+        self.right_door = isRightDoor
         self.bound_box = {
             'wall': [[0, 0, 0 + 350, 82], [450, 0, 450 + 350, 600 - 518], [718, 82, 800, 250],
                      [0, 82, 82, 250], [0, 350, 82, 540], [0, 540, 350, 600],
                      [450, 540, 800, 600], [718, 350, 800, 540]],
-            'door': [[0, 250, 82, 350], [350, 540, 450, 600],
-                     [717, 250, 800, 350], [350, 0, 450, 82]]
+            'door_left': [[0, 250, 82, 350]],
+            'door_up': [[350, 540, 450, 600]],
+            'door_right': [[717, 250, 800, 350]],
+            'door_down': [[350, 0, 450, 82]]
         }
 
     def update(self):
@@ -36,7 +38,8 @@ class FirstDungeonMap:
 
     def get_bb(self, category, num):
         return self.bound_box[category][num][0], self.bound_box[category][num][1],\
-               self.bound_box[category][num][2], self.bound_box[category][num][3]
+            self.bound_box[category][num][2], self.bound_box[category][num][3]
+
 
     def draw(self):
         self.image.draw(Window_Width // 2, Window_Height // 2, Window_Width, Window_Height)
@@ -62,8 +65,10 @@ class FirstDungeonMap:
         for i in range(8):
             draw_rectangle(*self.get_bb('wall', i))
 
-        for i in range(4):
-            draw_rectangle(*self.get_bb('door', i))
+        draw_rectangle(*self.get_bb('door_up', 0))
+        draw_rectangle(*self.get_bb('door_right', 0))
+        draw_rectangle(*self.get_bb('door_left', 0))
+        draw_rectangle(*self.get_bb('door_down', 0))
 
 
 

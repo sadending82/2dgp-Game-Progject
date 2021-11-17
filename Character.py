@@ -2,6 +2,8 @@ from pico2d import *
 import math
 import time
 
+SECOND_PER_ACTION = 0.1
+
 Character_State_Idle = 0
 Character_State_Move = 1
 Character_State_Attack = 2
@@ -26,7 +28,7 @@ class Hero:
         self.hp_point = load_image('HP_Point.png')
         self.Gold = 0
         self.frame = 0
-        self.damage = 1
+        self.damage = 5
         self.is_invincible = False
         self.invincible_timer = 0.0
         self.direction = Character_Direction_Right
@@ -184,7 +186,7 @@ class Hero:
                     self.punch_image.clip_composite_draw(0, 0, 16, 16, math.radians(-90), '',
                         (self.bound_box['attack_down'][0] + self.bound_box['attack_down'][2])//2,
                         (self.bound_box['attack_down'][1] + self.bound_box['attack_down'][3])//2)
-        # draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_bb())
         draw_rectangle(*self.get_attack_bb())
         self.hp_bar.draw(120, 580)
         cur_hp = int((150 * (1 - ((self.MaxHp - self.Hp)/self.MaxHp))))
@@ -209,6 +211,8 @@ class Hero:
                    self.bound_box['attack_down'][2], self.bound_box['attack_down'][3]
 
     def attacked(self, damage):
+        self.is_invincible = True
+        self.invincible_timer = get_time()
 
 
     def update(self):
@@ -223,6 +227,8 @@ class Hero:
             if self.direction == Character_Direction_Down:
                 self.y -= 2 * self.speed
 
+
+
         self.bound_box = {
             'body': [self.x - 8, self.y - 16, self.x + 8, self.y + 16],
             'attack_left': [self.x - 24, self.y - 8, self.x - 8, self.y + 8],
@@ -233,7 +239,7 @@ class Hero:
 
         nowTime = time.time()
 
-        if nowTime - self.frameTime > 0.1:
+        if nowTime - self.frameTime > SECOND_PER_ACTION:
             self.frameTime = time.time()
             if self.state == Character_State_Move or Character_State_Idle:
                 self.frame = (self.frame + 1) % 6
@@ -259,3 +265,7 @@ class Hero:
             else:
                 self.state = Character_State_Idle
 
+        nTime = get_time()
+        if self.is_invincible:
+            if nTime - self.invincible_timer > 1:
+                self.is_invincible = False
