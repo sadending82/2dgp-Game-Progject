@@ -16,6 +16,7 @@ Down = 3
 class Bunnia:
 
     image = None
+    code = 0
 
     def __init__(self):
         self.x = random.randint(81, 680)
@@ -145,6 +146,7 @@ class Bunnia:
 class Soul:
 
     image = None
+    code = 1
 
     def __init__(self):
         self.x = random.randint(81, 680)

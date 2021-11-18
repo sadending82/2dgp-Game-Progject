@@ -20,6 +20,10 @@ def remove_object(o):
             break
 
 
+def pop_object(layer):
+    objects[layer].pop()
+
+
 def clear():
     for o in all_objects():
         del o

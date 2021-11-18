@@ -8,8 +8,7 @@ from save_and_load import *
 import time
 from game_framework import *
 from game_world import *
-import dungeon_1_101
-import dungeon_1_103
+import dungeon_1_102
 import inventory
 import item
 
@@ -34,7 +33,7 @@ def enter():
     else:
         izuna = return_object(Character.Hero)
     MonsterStack = []
-    for i in range(2):
+    for i in range(3):
         MonsterStack.append(Monster.Bunnia())
     for i in range(1):
         MonsterStack.append(Monster.Soul())
@@ -201,7 +200,7 @@ def update():
         game_object.update()
     game_world.sort_objects(1)
 
-    if collide_with_map(izuna, base_dungeon, 'wall', 8):
+    if collide_with_map(izuna, base_dungeon, 'wall', 8) :
         if izuna.direction == Character.Character_Direction_Left:
             izuna.x += 2 * izuna.speed
         if izuna.direction == Character.Character_Direction_Right:
@@ -212,8 +211,8 @@ def update():
             izuna.y += 2 * izuna.speed
 
     if not base_dungeon.is_door_open:
-        if collide_with_map(izuna, base_dungeon, 'door_up', 1) or collide_with_map(izuna, base_dungeon, 'door_left', 1) \
-                or collide_with_map(izuna, base_dungeon, 'door_right', 1) or \
+        if collide_with_map(izuna, base_dungeon, 'door_up', 1) or collide_with_map(izuna, base_dungeon, 'door_left', 1)\
+                or collide_with_map(izuna, base_dungeon, 'door_right', 1) or\
                 collide_with_map(izuna, base_dungeon, 'door_down', 1):
             if izuna.direction == Character.Character_Direction_Left:
                 izuna.x += 2 * izuna.speed
@@ -224,8 +223,7 @@ def update():
             if izuna.direction == Character.Character_Direction_Down:
                 izuna.y += 2 * izuna.speed
     else:
-        if collide_with_map(izuna, base_dungeon, 'door_down', 1):
-            print('left_door')
+        if collide_with_map(izuna, base_dungeon, 'door_right', 1) or collide_with_map(izuna, base_dungeon, 'door_down', 1):
             if izuna.direction == Character.Character_Direction_Left:
                 izuna.x += 2 * izuna.speed
             if izuna.direction == Character.Character_Direction_Right:
@@ -234,16 +232,12 @@ def update():
                 izuna.y -= 2 * izuna.speed
             if izuna.direction == Character.Character_Direction_Down:
                 izuna.y += 2 * izuna.speed
-        if collide_with_map(izuna, base_dungeon, 'door_left', 1):
-            izuna.x = 700
-            save_data(izuna, 0)
-            game_framework.change_state(dungeon_1_101)
         if collide_with_map(izuna, base_dungeon, 'door_up', 1):
             print('up_door')
-        if collide_with_map(izuna, base_dungeon, 'door_right', 1):
-            izuna.x = 105
+        if collide_with_map(izuna, base_dungeon, 'door_left', 1):
+            izuna.x = 700
             save_data(izuna, 2)
-            game_framework.change_state(dungeon_1_103)
+            game_framework.change_state(dungeon_1_102)
 
     if MonsterCount - count <= 0:
         base_dungeon.is_door_open = True

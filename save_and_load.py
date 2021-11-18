@@ -34,6 +34,12 @@ def load_data():
         elif door == 3:
             Chara.direction = Character.Character_Direction_Down
 
+        while True:
+            line = f.readline()
+            if not line:
+                break
+            Chara.inventory.append(int(line))
+
     return Chara
 
 
@@ -50,6 +56,7 @@ def save_data(chara, door_num):
     direction = str(chara.direction)
     speed = str(chara.speed)
     door = str(door_num)
+
     f.write(posx+"\n")
     f.write(posy+"\n")
     f.write(state+"\n")
@@ -58,3 +65,6 @@ def save_data(chara, door_num):
     f.write(direction+"\n")
     f.write(speed+"\n")
     f.write(door+"\n")
+    for i in chara.inventory:
+        item = str(i)
+        f.write(item + "\n")

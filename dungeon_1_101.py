@@ -9,11 +9,15 @@ import time
 from game_framework import *
 from game_world import *
 import dungeon_1_102
+import inventory
+import item
 
 Window_Width = get_canvas_width()
 Window_Height = get_canvas_height()
 izuna = None
 MonsterStack = []
+ItemStack = []
+ItemCount = 0
 base_dungeon = None
 MonsterCount = 0
 
@@ -79,6 +83,8 @@ def handle_events():
                     base_dungeon.is_door_open = False
                 else:
                     base_dungeon.is_door_open = True
+            elif event.key == SDLK_i:
+                game_framework.push_state(inventory)
             elif event.key == SDLK_ESCAPE:
                 quit()
             elif event.key == SDLK_LSHIFT:
@@ -111,6 +117,11 @@ def collide(a, b):
 
     return True
 
+def pause():
+    pass
+
+def resume():
+    pass
 
 def collide_with_map(a, wall, category, count):
 
@@ -150,10 +161,15 @@ def collide_with_attack(chara, b):
 
 
 def update():
-    global izuna, MonsterStack
-    global is_attack, is_attack_delay
+    global izuna, MonsterStack, ItemStack
+    global is_attack, is_attack_delay, ItemCount
 
-
+    for i in ItemStack:
+        if collide(izuna, i):
+            izuna.inventory.append(i.item_code)
+            game_world.remove_object(i)
+            ItemStack.remove(i)
+            ItemCount -= 1
 
     count = 0
     for monster in MonsterStack:
@@ -171,6 +187,10 @@ def update():
 
         if monster.Hp <= 0:
             game_world.remove_object(monster)
+            m_item = item.item(monster.code, monster.x, monster.y)
+            ItemStack.append(m_item)
+            ItemCount += 1
+            game_world.add_object(ItemStack[ItemCount - 1], 1)
             monster.dead()
             count += 1
 
@@ -218,10 +238,14 @@ def update():
         if collide_with_map(izuna, base_dungeon, 'door_up', 1):
             print('up_door')
         if collide_with_map(izuna, base_dungeon, 'door_right', 1):
+            izuna.x = 105
+            save_data(izuna, 2)
             game_framework.change_state(dungeon_1_102)
 
     if MonsterCount - count <= 0:
         base_dungeon.is_door_open = True
+
+
 
     delay(0.005)
     handle_events()

@@ -46,7 +46,7 @@ class Hero:
             'attack_up': [self.x - 8, self.y + 8, self.x + 8, self.y + 24],
             'attack_down': [self.x - 8, self.y - 24, self.x + 8, self.y - 8],
         }
-        self.eff_bound_box = []
+        self.inventory = []
         self.speed = 1
 
     def draw(self):
