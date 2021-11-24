@@ -37,7 +37,7 @@ def enter():
         MonsterStack.append(Monster.Bunnia())
     for i in range(1):
         MonsterStack.append(Monster.Soul())
-    base_dungeon = map.FirstDungeonMap(map.Door_Normal, map.Door_Normal, map.Door_Normal, map.Door_None)
+    base_dungeon = map.FirstDungeonMap(map.Door_Normal, map.Door_Normal, map.Door_None, map.Door_None)
     MonsterCount = len(MonsterStack)
     add_object(izuna, 1)
     for i in MonsterStack:
