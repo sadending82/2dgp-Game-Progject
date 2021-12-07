@@ -11,73 +11,49 @@ from game_world import *
 import dungeon_1_102
 import inventory
 import item
+import server
 
 Window_Width = get_canvas_width()
 Window_Height = get_canvas_height()
-izuna = None
-MonsterStack = []
-ItemStack = []
-ItemCount = 0
-base_dungeon = None
-MonsterCount = 0
+
 
 is_attack = False
 is_attack_delay = False
 
 
 def enter():
-    global izuna, MonsterStack, base_dungeon, MonsterCount
     if not is_in_objects(Character.Hero):
-        izuna = Character.Hero()
-        izuna.state = Character.Character_State_Idle
+        server.izuna = Character.Hero()
+        server.izuna.state = Character.Character_State_Idle
     else:
-        izuna = return_object(Character.Hero)
+        server.izuna = return_object(Character.Hero)
     MonsterStack = []
     for i in range(2):
-        MonsterStack.append(Monster.Bunnia())
+        server.monster.append(Monster.Bunnia())
     for i in range(0):
-        MonsterStack.append(Monster.Soul())
-    base_dungeon = map.FirstDungeonMap(map.Door_None, map.Door_Normal, map.Door_Normal, map.Door_None)
-    MonsterCount = len(MonsterStack)
-    add_object(izuna, 1)
-    for i in MonsterStack:
+        server.monster.append(Monster.Soul())
+    server.map = map.FirstDungeonMap(map.Door_None, map.Door_Normal, map.Door_Normal, map.Door_None)
+    MonsterCount = len(server.MonsterStack)
+    add_object(server.izuna, 1)
+    for i in server.monster:
         add_object(i, 1)
-    add_object(base_dungeon, 0)
+    add_object(server.map, 0)
 
 
 def exit():
     global izuna, base_dungeon, MonsterStack
     game_world.clear()
 
-    # del izuna
-    # del base_dungeon
-    # del MonsterStack
+    server.izuna = None
+    server.map = None
+    server.monster.clear()
+    server.item.clear()
 
 
 def handle_events():
     global Program_Running
     global izuna
     global is_attack
-    events = get_events()
-    for event in events:
-        if event.type == SDL_KEYDOWN:
-            if event.key == SDLK_a:
-                izuna.isLeftButton = True
-            elif event.key == SDLK_d:
-                izuna.isRightButton = True
-            elif event.key == SDLK_w:
-                izuna.isUpButton = True
-            elif event.key == SDLK_s:
-                izuna.isDownButton = True
-            elif event.key == SDLK_j:
-                izuna.state = Character.Character_State_Attack
-                izuna.frame = 0
-                izuna.frameTime = time.time()
-                is_attack = True
-            elif event.key == SDLK_TAB:
-                save_data(izuna, izuna.direction)
-            elif event.key == SDLK_t:
-                izuna = load_data()
             elif event.key == SDLK_y:
                 if base_dungeon.is_door_open:
                     base_dungeon.is_door_open = False
