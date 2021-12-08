@@ -1,7 +1,6 @@
 from pico2d import *
 import math
 import time
-import save_and_load
 
 SECOND_PER_ACTION = 0.1
 
@@ -214,39 +213,6 @@ class Hero:
     def attacked(self, damage):
         self.is_invincible = True
         self.invincible_timer = get_time()
-
-    def handle_event(self):
-        events = get_events()
-        for event in events:
-            if event.type == SDL_KEYDOWN:
-                if event.key == SDLK_a:
-                    self.isLeftButton = True
-                elif event.key == SDLK_d:
-                    self.isRightButton = True
-                elif event.key == SDLK_w:
-                    self.isUpButton = True
-                elif event.key == SDLK_s:
-                    self.isDownButton = True
-                elif event.key == SDLK_j:
-                    self.state = Character_State_Attack
-                    self.frame = 0
-                    self.frameTime = time.time()
-                    is_attack = True
-                elif event.key == SDLK_TAB:
-                    save_and_load.save_data(self, self.direction)
-                elif event.key == SDLK_t:
-                    chara = save_and_load.load_data()
-                    self.x = chara.x
-                    self.y = chara.y
-                    self.state = chara.state
-                    self.Hp = chara.Hp
-                    self.Gold = chara.Gold
-                    self.direction = chara.direction
-                    self.speed = chara.speed
-                    self.inventory.clear()
-                    while chara.inventory:
-                        it = chara.inventory.pop()
-                        self.inventory.append(it)
 
 
     def update(self):
